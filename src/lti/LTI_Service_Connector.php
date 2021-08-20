@@ -56,7 +56,9 @@ class LTI_Service_Connector {
         $token_data = json_decode($resp, true);
         curl_close ($ch);
 
-        return $this->access_tokens[$scope_key] = $token_data['access_token'];
+        $access_token = ($token_data && array_key_exists('access_token', $token_data)) ? $token_data['access_token'] : null;
+        
+        return $this->access_tokens[$scope_key] = $access_token;
     }
 
     public function make_service_request($scopes, $method, $url, $body = null, $content_type = 'application/json', $accept = 'application/json') {
